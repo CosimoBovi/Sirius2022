@@ -1,41 +1,24 @@
-function init(){
+function init() {
+    fetch("https://localhost:44383/api/Dispositivo/Posizioni")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(element => {
+                var divPlant = document.createElement("div");
+                divPlant.setAttribute("id", element.plant);
+                divPlant.appendChild(document.createTextNode(element.plant));
 
-    
-	const xhttp = new XMLHttpRequest();
-	
+                divPlant.addEventListener("click", vaiAPlant);
 
-    xhttp.onload = function(){
-		
-        var oggetto = JSON.parse(xhttp.responseText);
-
-
-        oggetto.forEach(element => {
-            
-            var divPlant = document.createElement("div");
-            divPlant.setAttribute("id",element.plant);
-            divPlant.appendChild(document.createTextNode(element.plant));
-
-            divPlant.addEventListener("click",vaiAPlant );
-
-            document.getElementById("elenco").appendChild(divPlant);
-         
-
+                document.getElementById("elenco").appendChild(divPlant);
+            });
+        })
+        .catch(error => {
+            console.error('Errore durante il recupero dei dati:', error);
         });
-        
-		
-	}
-	
-	xhttp.open("GET","https://localhost:44383/api/Dispositivo/Posizioni",true);
-	xhttp.send();
-
 }
 
-function vaiAPlant(event){
-
-    sessionStorage.setItem("plant",event.currentTarget.id);
-
+function vaiAPlant(event) {
+    sessionStorage.setItem("plant", event.currentTarget.id);
     console.log(event.currentTarget.id);
-    window.location.href="Plant.html";
-
-
+    window.location.href = "Plant.html";
 }
